@@ -1,0 +1,54 @@
+Name: Sweta Rout
+UnityID: srout
+StudentID: 200206715
+
+Additional Questions
+
+1) What are the advantages and disadvantages of each of the two scheduling policies? Also, give the advantages and disadvantages of the round robin scheduling policy originally implemented in Xinu.
+
+Answer : 
+Random Scheduler :
+Advantages : 1)As it does not follow any particular pattern, random numbers may be generated in a way to get the best execution time for all processes
+	     2)High priority processes are selected with a higher probability than low priority
+Disadvantages : 1)This scheduling algorithm is unpredictable as selection pf process depends on the random number generated.
+		2)More time and memory required as compared to the xinu scheduler based on round robin algorithm
+
+Linux-Like scheduler :
+Advantages : 1)It confirms fair execution of processes. High priority processes are executed first for longer duration but low priority processes dont face 
+	       starvation. This is because they are executed within the epoch time, hence reducing the wait time of low priority processes.
+	     2)Processes are given higher preference in the epochs if it uses its allocated CPU time partially. That is, goodness of a process affects its 
+	       priority in the next epoch.
+Disadvantages : 1)Difficult to implement with a lot of parameters like, quantum, counter, goodness.
+		2)If a high priority process is created during an epoch, it needs to wait until the end of the epoch. Being a high priority process, it is 
+	         not given preference,
+		3)Context switch time is higher due to a lot of calculations.
+
+Xinu's Round Robin scheduler :
+Advantages : 1)High priority tasks are executed first. Unlike Linux-Like scheduler, even if a new high priority process is created, it wont have to wait as 
+               long as quantum is only 10.
+	     2)Simple to implement as scheduling requires only priority as the parameter.
+	     3)Context switching is also faster as only max priority needs to be computed for switch.
+Disadvantages : 1)Low priority processes have to face starvation for a long time. There is also a possibilty that these processes dont get executed.
+		2)High priority processes cant be preempted even if they are stuck in infinite loop.
+
+
+2) Assume that there are three processes P1, P2, P3 that will run forever without blocking. We want to allocate the following CPU times to each of them: 20% to P1, 30% to P2, and 50% to P3. Which priorities do we need to set to P1, P2, and P3 to accomplish this if we want to use the Random scheduler?  Assume that those processes are the only ones running in the machine. Could you give a generalization of your result to n processes? Explain.
+
+Answer :
+For random scheduler, we keep increasing a variable, so the variable value is proportional to CPU time. And if priority of P1 = x, P2 = y and P3 = z,
+total sum = x+y+z and probabilty of allocating the CPU for P1=x/(x+y+z) P2=y/(x+y+z) P3=z/(x+y+z)
+
+Given : CPU usage for P1=20%, P2=30% and P3=50%
+	Total Sum=20+30+50=100
+So, priority for P1 = 20, P2 = 30 and P3 = 50
+
+Similarly for N processes(say, P1,P2,P3....PN), if their CPU usage is n1%, n2%, n3% .... nN%, where n1+n2+n3+...nN=100,
+then their priorities are given as follows:
+Priority of P1 = n1, P2 = n2, P3 = n3 .... PN = nN
+
+3) Describe the way each of the schedulers affects the NULL process.
+
+Answer :
+The NULL process is executed only when there are no other processes present in the ready queue waiting for execution. Once the NULL process is executing,
+ready queue will be empty.
+ 
